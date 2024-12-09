@@ -4,14 +4,14 @@ metadata:
   name: my-apps-ingress
   namespace: default  # Ensure this is the namespace where your services and Ingress are defined
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"  # Should match the name of your ClusterIssuer
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"  # Should match the name of your ClusterIssuer
     acme.cert-manager.io/http01-edit-in-place: "true"
-    ingressClassName: nginx  # Ensure this matches the class name of your Ingress Controller
 spec:
+  ingressClassName: nginx  # Ensure this matches the class name of your Ingress Controller
   tls:
   - hosts:
     - ekart.ganeshpawar.one
-    - goldencatbank.ganeshpawar.one  # The domain for which you want to use TLS
+    - nginx.ganeshpawar.one  # The domain for which you want to use TLS
     secretName: tls-secret  # Must match the secret name defined in the Certificate resource
   rules:
   - host: ekart.ganeshpawar.one  # The domain to route traffic to
@@ -24,13 +24,13 @@ spec:
             name: ekart-app-service  # Ensure this matches the name of your service
             port:
               number: 80  # Ensure this matches the port your service listens on
-  - host: goldencatbank.ganeshpawar.one  # The domain to route traffic to
+  - host: nginx.ganeshpawar.one  # The domain to route traffic to
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: bankapp-service  # Ensure this matches the name of your service
+            name: nginx-service  # Ensure this matches the name of your service
             port:
               number: 80  # Ensure this matches the port your service listens on
