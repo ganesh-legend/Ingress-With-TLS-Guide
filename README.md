@@ -1,7 +1,7 @@
 # Ingress-With-TLS-Guide-on-AWS
 
 ## Introduction
-1) We are using **kind K8s cluster** for this demonstration.
+1) We are using **Kind K8s cluster** for this demonstration.
 2) We are using **Let's encrypt** which is free open source zero benefit **Certificate Authority** to issue **certificate**.
 
 #
@@ -22,7 +22,15 @@
 Assuming that we have all things mentioned in above.
 Let's start 
 
-### 1) Install Docker 
+### 1) Use Terminal (_to connect to server_)
+Connect to server using any tool like **putty, mobaxterm** and  run given command to update package repository.
+```bash
+sudo apt-get update
+```
+
+#
+
+### 2) Install Docker 
 _Note: Always install docker from official docker page_
 
 We need docker to be installed because **Kind cluster** run as **docker container**.
@@ -44,4 +52,5 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 sudo usermod -aG docker $USER
 ```
-
+After installing docker,
+You need to disconnect from your 
