@@ -1,8 +1,8 @@
 # Ingress-With-TLS-Guide-on-AWS
 
 ## Introduction
-We are using kind K8s cluster for this demonstration.
-We are using Let's encrypt which is free open source zero benefit Certificate Authority to issue certificate.
+1) We are using **kind K8s cluster** for this demonstration.
+2) We are using **Let's encrypt** which is free open source zero benefit **Certificate Authority** to issue **certificate**.
 
 #
 
