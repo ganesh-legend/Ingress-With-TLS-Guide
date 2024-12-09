@@ -1,5 +1,11 @@
 # Ingress-With-TLS-Guide-on-AWS
 
+## Introduction
+We are using kind K8s cluster for this demonstration.
+We are using Let's encrypt which is free open source zero benefit Certificate Authority to issue certificate.
+
+#
+
 ## Notes: 
 1) Don't try it on **local machine**. You will waste your time by putting your efforts. Local machine has **private IP** and you will not get certificate against private IP.
 2) Here we are using **kind k8s cluster** and it also has private IP like **minikube k8s cluster** but kind supports **port-forwarding to Host(EC2 instance)** by passing **config file** while creating kind cluster which minikube doesn't do. So, we can use Host public IP as ingress IP. So, certificate will be issued to **domain name** when we map this IP in **Domain provider interface.**
