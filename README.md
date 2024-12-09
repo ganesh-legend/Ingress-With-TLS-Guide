@@ -55,14 +55,43 @@ sudo usermod -aG docker $USER
 After installing docker,
 You need to disconnect from your terminal and reconnect. _(Basically you will get access to docker.)_
 
-### 3) Install kubectl and kind
+### 3) Install kubectl, kind and create cluster using port-forwarding config file.
+
 1) Kubectl is a tool to communicate with cluster.
 ```bash
 sudo snap install kubectl --classic
 ```
+
 2) Kind is a tool to create local K8s cluster.
 ```bash
 [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.25.0/kind-linux-amd64
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 ```
+
+3) Cluster creation with port-forwading to Host using config file.
+i) -----> create file with name **kind-ingress-config**  _(file name can be any)_
+```bash
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+```
+ii) -----> create cluster
+```bash
+kind create cluster --name=kind-ingress-cluster --config=kind-ingress-config
+```
+##### You will be done here for cluster creation.
