@@ -9,7 +9,8 @@
 ## Notes: 
 1) Don't try it on **local machine**. You will waste your time by putting your efforts. Local machine has **private IP** and you will not get certificate against private IP.
 2) Here we are using **kind k8s cluster** and it also has private IP like **minikube k8s cluster** but kind supports **port-forwarding to Host(EC2 instance)** by passing **config file** while creating kind cluster which minikube doesn't do. So, we can use Host public IP as ingress IP. So, certificate will be issued to **domain name** when we map this IP in **Domain provider interface.**
-3) While following given steps, you should have patience. Take it carefully.
+3) Make sure 80 and 443 port are available for your EC2 instance in security group.
+4) While following given steps, you should have patience. Take it carefully.
 
 #
 
@@ -100,7 +101,7 @@ kind create cluster --name=kind-ingress-cluster --config=kind-ingress-config
 
 ### 4) Deploy ingress controller
 
-You will get yml file in this repo named **deploy_ingress_nginx_controller_on_kind.yml** to deploy ingress controller. execute next command
+You will get yml file named **deploy_ingress_nginx_controller_on_kind.yml** in this repo to deploy ingress controller. execute next command
 ```bash
 kubectl apply -f deploy_ingress_nginx_controller_on_kind.yml
 ```
@@ -113,7 +114,7 @@ kubectl get all -n ingress-nginx
 
 ### 5) Deploy Cert-Manager 
 
-You will get yml file in this repo named **deploying_cert-manager_on_kind.yaml** to deploy cert-manager controller. execute next command
+You will get yml file named **deploying_cert-manager_on_kind.yaml** in this repo to deploy cert-manager controller. execute next command
 ```bash
 kubectl apply -f deploying_cert-manager_on_kind.yaml
 ```
@@ -126,7 +127,7 @@ kubectl get all -n cert-manager
 
 ### 6) Create ingress yaml file 
 
-You will get yml file in this repo named **ingress.yaml** to create ingress resource.
+You will get yml file named **ingress.yaml** in this repo to create ingress resource.
 You can make changes in this file as per your requirements.
 
 or
@@ -174,8 +175,8 @@ spec:
 
 ### 7) Create staging and production ClusterIssuer to generate certificate.
 
-You will get yml file in this repo named **staging-issuer.yaml** to create staging resource.
-You will get yml file in this repo named **prod-issuer.yaml** to create ingress resource.
+You will get yml file named **staging-issuer.yaml** in this repo to create staging resource.
+You will get yml file named **prod-issuer.yaml** in this repo to create ingress resource.
 You can make changes in this file as per your requirements.
 
 or 
@@ -218,4 +219,119 @@ spec:
 
 #
 
-### 8) Demonstration of Ingress and staging
+### 8) Map IPv4 of host machine in domain name provider. 
+1) Go to your domain name provider and add records.
+2) If you have multiple host names (e.g. nginx.ganeshpawar.one, demo.ganeshpawar.one) in ingress.yml file then you need add records for this in your domain name provider with same IP.
+
+#
+
+### 9) Demonstration of Ingress and staging-issuer
+
+First, You need to deploy staging issuer yaml file.
+
+```bash
+kubectl apply -f staging-issuer.yaml
+```
+to know about staging issuer is in TRUE state.
+```bash
+kubectl get clusterissuer
+```
+
+then deploy ingress yaml file.
+
+```bash
+kubectl apply -f ingress.yaml
+```
+
+to know ingress deployed
+```bash
+kubectl get ing
+```
+
+once you deploy these two resources
+Wait for while until certificate will get into TRUE state. It will take some time. So, have some patience.
+
+To check secret is created.
+```bash
+kubectl get secret
+```
+
+To check certificate in TRUE state, you run below command
+
+```bash
+kubectl get certificate
+```
+
+Now if the certificate in TRUE state. DO next stage.
+
+#
+
+### 10) Demonstration of ingress and prod issuer 
+
+First, You need to deploy prod issuer yaml file.
+
+```bash
+kubectl apply -f prod-issuer.yaml
+```
+to know about prod issuer is in TRUE state.
+```bash
+kubectl get clusterissuer
+```
+
+then edit and deploy ingress yaml file.
+
+```bash
+vi ingress.yaml
+```
+
+change one line's field in ingress yaml
+
+```bash
+cert-manager.io/cluster-issuer: "letsencrypt-prod"
+```
+
+once you deploy these two resources
+Wait for while until certificate will get into TRUE state. It will take some time. So, have some patience.
+
+To check secret is created.
+```bash
+kubectl get secret
+```
+
+To check certificate in TRUE state, you run below command
+
+```bash
+kubectl get certificate
+```
+
+Now if the certificate in TRUE state then your Let's Encrypt certificate is issued to your domain names.
+
+##### Note: Certificates are issued against domain names not IP addresses.
+
+Type your domain names in your browser and see your domain name is having secure connection.
+
+### Some Command for troubleshooting......
+
+```bash
+kubectl describe certificate
+```
+
+```bash
+kubectl get certificaterequest
+```
+
+```bash
+kubectl describe certificaterequest
+```
+
+```bash
+kubectl describe certificate
+```
+
+```bash
+kubectl logs pod cert_manager-pod-name -n cert-manager
+```
+
+
+## Thanks, we are done here........!
+## Happy Learning...😊
