@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    email: ganeshpawar06969@gmail.com
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-staging  # Ensure this matches the secret used for the private key
+    solvers:
+    - http01:
+        ingress:
+          class: nginx  # Make sure this matches the class of your Ingress Controller
