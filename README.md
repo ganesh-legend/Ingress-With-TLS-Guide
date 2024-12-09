@@ -94,4 +94,12 @@ ii) -----> create cluster
 ```bash
 kind create cluster --name=kind-ingress-cluster --config=kind-ingress-config
 ```
-##### You will be done here for cluster creation.
+##### You are done here for cluster creation.
+
+#
+
+### 4) Deploy ingress controller
+
+```bash
+You will get 
+```
