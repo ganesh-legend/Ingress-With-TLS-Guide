@@ -100,6 +100,122 @@ kind create cluster --name=kind-ingress-cluster --config=kind-ingress-config
 
 ### 4) Deploy ingress controller
 
+You will get yml file in this repo named **deploy_ingress_nginx_controller_on_kind.yml** to deploy ingress controller. execute next command
 ```bash
-You will get 
+kubectl apply -f deploy_ingress_nginx_controller_on_kind.yml
 ```
+check if ingress controller pod is running using next command.
+```bash
+kubectl get all -n ingress-nginx
+```
+
+#
+
+### 5) Deploy Cert-Manager 
+
+You will get yml file in this repo named **deploying_cert-manager_on_kind.yaml** to deploy cert-manager controller. execute next command
+```bash
+kubectl apply -f deploying_cert-manager_on_kind.yaml
+```
+check if cert manager pods are running using next command.
+```bash
+kubectl get all -n cert-manager
+```
+
+#
+
+### 6) Create ingress yaml file 
+
+You will get yml file in this repo named **ingress.yaml** to create ingress resource.
+You can make changes in this file as per your requirements.
+
+or
+
+```bash
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-apps-ingress
+  namespace: default  # Ensure this is the namespace where your services and Ingress are defined
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"  # Should match the name of your ClusterIssuer
+    acme.cert-manager.io/http01-edit-in-place: "true"
+spec:
+  ingressClassName: nginx  # Ensure this matches the class name of your Ingress Controller
+  tls:
+  - hosts:
+    - ekart.ganeshpawar.one
+    - nginx.ganeshpawar.one  # The domain for which you want to use TLS
+    secretName: tls-secret  # Must match the secret name defined in the Certificate resource
+  rules:
+  - host: ekart.ganeshpawar.one  # The domain to route traffic to
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ekart-app-service  # Ensure this matches the name of your service
+            port:
+              number: 80  # Ensure this matches the port your service listens on
+  - host: nginx.ganeshpawar.one  # The domain to route traffic to
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service  # Ensure this matches the name of your service
+            port:
+              number: 80  # Ensure this matches the port your service listens on
+```
+
+#
+
+### 7) Create staging and production ClusterIssuer to generate certificate.
+
+You will get yml file in this repo named **staging-issuer.yaml** to create staging resource.
+You will get yml file in this repo named **prod-issuer.yaml** to create ingress resource.
+You can make changes in this file as per your requirements.
+
+or 
+
+staging-issuer.yaml
+```bash
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    email: ganeshpawar06969@gmail.com
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-staging  # Ensure this matches the secret used for the private key
+    solvers:
+    - http01:
+        ingress:
+          class: nginx  # Make sure this matches the class of your Ingress Controller
+```
+
+prod-issuer.yaml
+```bash
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    email: ganeshpawar06969@gmail.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-prod  # Ensure this matches the secret used for the private key
+    solvers:
+    - http01:
+        ingress:
+          class: nginx  # Make sure this matches the class of your Ingress Controller
+```
+
+#
+
+### 8) Demonstration of Ingress and staging
