@@ -53,4 +53,16 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo usermod -aG docker $USER
 ```
 After installing docker,
-You need to disconnect from your 
+You need to disconnect from your terminal and reconnect. _(Basically you will get access to docker.)_
+
+### 3) Install kubectl and kind
+1) Kubectl is a tool to communicate with cluster.
+```bash
+sudo snap install kubectl --classic
+```
+2) Kind is a tool to create local K8s cluster.
+```bash
+[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.25.0/kind-linux-amd64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+```
