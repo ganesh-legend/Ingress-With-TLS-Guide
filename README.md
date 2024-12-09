@@ -19,7 +19,7 @@ Let's start
 ### 1) Install Docker 
 _Note: Always install docker from official docker page_
 
-Kind cluster run as docker container.
+We need docker to be installed because **Kind cluster** run as **docker container**.
 For the time, Copy from here
 ```bash
 # Add Docker's official GPG key:
