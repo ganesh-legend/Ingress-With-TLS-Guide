@@ -3,6 +3,7 @@
 ## Introduction
 1) We are using **Kind K8s cluster** for this demonstration.
 2) We are using **Let's encrypt** which is free open source zero benefit **Certificate Authority** to issue **certificate**.
+3) Clone this repository to your server to use **yaml manifest files and others files.**
 
 #
 
