@@ -219,13 +219,31 @@ spec:
 
 #
 
-### 8) Map IPv4 of host machine in domain name provider. 
+### 8) Deploy some deployments and services
+
+i) You will get deployment.yml and service.yml file. Deploy those using next commands
+
+```bash
+kubectl deploy -f deployment.yml
+kubectl deploy -f service.yml
+```
+
+ii) You will get nginx-dep-svc.yaml file. Deploy this using next command
+
+```bash
+kubectl deploy -f nginx-dep-svc.yml
+```
+
+
+#
+
+### 9) Map IPv4 of host machine in domain name provider. 
 1) Go to your domain name provider and add records.
 2) If you have multiple host names (e.g. nginx.ganeshpawar.one, demo.ganeshpawar.one) in ingress.yml file then you need add records for this in your domain name provider with same IP.
 
 #
 
-### 9) Demonstration of Ingress and staging-issuer
+### 10) Demonstration of Ingress and staging-issuer
 
 First, You need to deploy staging issuer yaml file.
 
@@ -266,7 +284,7 @@ Now if the certificate in TRUE state. DO next stage.
 
 #
 
-### 10) Demonstration of ingress and prod issuer 
+### 11) Demonstration of ingress and prod issuer 
 
 First, You need to deploy prod issuer yaml file.
 
