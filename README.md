@@ -224,14 +224,14 @@ spec:
 i) You will get deployment.yml and service.yml file. Deploy those using next commands
 
 ```bash
-kubectl deploy -f deployment.yml
-kubectl deploy -f service.yml
+kubectl apply -f deployment.yml
+kubectl apply -f service.yml
 ```
 
 ii) You will get nginx-dep-svc.yaml file. Deploy this using next command
 
 ```bash
-kubectl deploy -f nginx-dep-svc.yml
+kubectl apply -f nginx-dep-svc.yml
 ```
 
 
@@ -306,6 +306,12 @@ change one line's field in ingress yaml
 
 ```bash
 cert-manager.io/cluster-issuer: "letsencrypt-prod"
+```
+
+again apply to ingress yaml
+
+```bash
+kubectl apply -f ingress.yaml
 ```
 
 once you deploy these two resources
