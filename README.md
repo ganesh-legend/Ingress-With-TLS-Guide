@@ -189,7 +189,7 @@ metadata:
   name: letsencrypt-staging
 spec:
   acme:
-    email: ganeshpawar06969@gmail.com
+    email: admin@gmail.com
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: letsencrypt-staging  # Ensure this matches the secret used for the private key
@@ -207,7 +207,7 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    email: ganeshpawar06969@gmail.com
+    email: admin@gmail.com
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: letsencrypt-prod  # Ensure this matches the secret used for the private key
