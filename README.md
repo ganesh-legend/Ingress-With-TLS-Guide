@@ -231,7 +231,7 @@ kubectl apply -f service.yml
 ii) You will get nginx-dep-svc.yaml file. Deploy this using next command
 
 ```bash
-kubectl apply -f nginx-dep-svc.yml
+kubectl apply -f nginx-dep-svc.yaml
 ```
 
 
